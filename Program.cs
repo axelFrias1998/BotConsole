@@ -55,22 +55,22 @@
                 else
                 {   
                     var keysNotUsed = context.BotKeys.Where(x => x.InUse == false);
-                    int newKeys = keysNotUsed.Count();
                     context.BotKeys.RemoveRange(context.BotKeys.Where(x => x.InUse == false));
                     context.SaveChanges();
                     List<BotKeys> botKeys = new List<BotKeys>();
-                    for (int i = 0; i < newKeys; i++)
+                    for (int i = 0; i < 50; i++)
                     {
                         string key = Guid.NewGuid().ToString("D");
                         if(context.BotKeys.Where(x => x.Key == key) == null)
                         {
-                            botKeys.Add(new BotKeys{
-                                Key = Guid.NewGuid().ToString("D"),
-                                InUse = false,
-                                CreationDate = DateTime.Now,
-                            });
                             i--;
+                            continue;
                         }
+                        botKeys.Add(new BotKeys{
+                            Key = Guid.NewGuid().ToString("D"),
+                            InUse = false,
+                            CreationDate = DateTime.Now,
+                        });
                     }
                     context.BotKeys.AddRange(botKeys);
                     context.SaveChanges();
